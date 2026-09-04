@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping do QA - Página Inicial</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <main class="container">
+
+        <section class="card">
+
+            <div class="logo">
+                <span>Shopping</span> do QA
+            </div>
+
+            <h1>Login Success!</h1>
+
+            <p class="subtitle">
+                Você fez login com sucesso.
+            </p>
+
+            <div class="user-info">
+
+                <h2>Dados do usuário</h2>
+
+                <p>
+                    <strong>Nome:</strong>
+                    <span id="nomeUsuario"></span>
+                </p>
+
+                <p>
+                    <strong>Sobrenome:</strong>
+                    <span id="sobrenomeUsuario"></span>
+                </p>
+
+                <p>
+                    <strong>Data de nascimento:</strong>
+                    <span id="dataNascimentoUsuario"></span>
+                </p>
+
+                <p>
+                    <strong>E-mail:</strong>
+                    <span id="emailUsuario"></span>
+                </p>
+
+            </div>
+
+            <button type="button" id="logoutButton">
+                Sair
+            </button>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        const usuarioLogado = JSON.parse(
+            localStorage.getItem("usuarioLogado")
+        );
+
+        if (!usuarioLogado) {
+
+            window.location.href = "login.html";
+
+        } else {
+
+            document.getElementById("nomeUsuario").textContent =
+                usuarioLogado.nome;
+
+            document.getElementById("sobrenomeUsuario").textContent =
+                usuarioLogado.sobrenome;
+
+            document.getElementById("dataNascimentoUsuario").textContent =
+                usuarioLogado.data_de_nascimento;
+
+            document.getElementById("emailUsuario").textContent =
+                usuarioLogado.email;
+        }
+
+
+        const logoutButton = document.getElementById("logoutButton");
+
+        logoutButton.addEventListener("click", function () {
+
+            localStorage.removeItem("usuarioLogado");
+
+            window.location.href = "login.html";
+
+        });
+
+    </script>
+
+</body>
+
+</html>
