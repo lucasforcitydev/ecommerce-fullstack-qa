@@ -32,5 +32,14 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Verificar Supabase
+        run: |
+          if [[ "$SUPABASE_URL" =~ ^https:// ]]; then
+            echo "SUPABASE_URL configurada corretamente."
+          else
+            echo "SUPABASE_URL não está chegando corretamente ao workflow."
+            exit 1
+          fi
+
       - name: Executar testes
         run: npm test
