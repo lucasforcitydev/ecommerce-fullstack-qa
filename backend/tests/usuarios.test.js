@@ -218,7 +218,7 @@ describe("API Shopping do QA", () => {
         const usuario = {
             nome: "Lucas",
             sobrenome: "Teste",
-            email: "email-invalido",
+            email: "email-invalido-ct008",
             data_de_nascimento: "1996-09-07",
             senha: "Teste@123"
         };
@@ -238,7 +238,7 @@ describe("API Shopping do QA", () => {
          * O ideal será implementar essa validação depois.
          */
 
-        expect([201, 500]).toContain(response.statusCode);
+        expect(response.statusCode).toBe(201);
     });
 
 
