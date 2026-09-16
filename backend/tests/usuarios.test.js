@@ -10,12 +10,6 @@ describe("API Shopping do QA", () => {
         emailTeste = `jest.${Date.now()}@example.com`;
     });
 
-
-    // =====================================================
-    // CT-API-001
-    // GET /
-    // =====================================================
-
     test("CT-API-001 - Deve verificar se a API está funcionando", async () => {
 
         const response = await request(app)
@@ -28,12 +22,6 @@ describe("API Shopping do QA", () => {
         });
     });
 
-
-    // =====================================================
-    // CT-API-002
-    // GET /usuarios
-    // =====================================================
-
     test("CT-API-002 - Deve retornar a lista de usuários", async () => {
 
         const response = await request(app)
@@ -43,13 +31,6 @@ describe("API Shopping do QA", () => {
 
         expect(Array.isArray(response.body)).toBe(true);
     });
-
-
-    // =====================================================
-    // CT-API-003
-    // GET /usuarios
-    // Validar campos retornados
-    // =====================================================
 
     test("CT-API-003 - Não deve retornar a senha dos usuários", async () => {
 
@@ -75,13 +56,6 @@ describe("API Shopping do QA", () => {
             expect(usuario).not.toHaveProperty("senha");
         }
     });
-
-
-    // =====================================================
-    // CT-API-004
-    // POST /usuarios
-    // Cadastro válido
-    // =====================================================
 
     test("CT-API-004 - Deve cadastrar um novo usuário", async () => {
 
@@ -122,13 +96,6 @@ describe("API Shopping do QA", () => {
         );
     });
 
-
-    // =====================================================
-    // CT-API-005
-    // POST /usuarios
-    // Sem nome
-    // =====================================================
-
     test("CT-API-005 - Deve rejeitar cadastro sem nome", async () => {
 
         const usuario = {
@@ -149,13 +116,6 @@ describe("API Shopping do QA", () => {
             "Todos os campos são obrigatórios."
         );
     });
-
-
-    // =====================================================
-    // CT-API-006
-    // POST /usuarios
-    // Sem email
-    // =====================================================
 
     test("CT-API-006 - Deve rejeitar cadastro sem e-mail", async () => {
 
@@ -178,13 +138,6 @@ describe("API Shopping do QA", () => {
         );
     });
 
-
-    // =====================================================
-    // CT-API-007
-    // POST /usuarios
-    // Sem senha
-    // =====================================================
-
     test("CT-API-007 - Deve rejeitar cadastro sem senha", async () => {
 
         const usuario = {
@@ -206,13 +159,6 @@ describe("API Shopping do QA", () => {
         );
     });
 
-
-    // =====================================================
-    // CT-API-008
-    // POST /usuarios
-    // E-mail inválido
-    // =====================================================
-
     test("CT-API-008 - Deve rejeitar e-mail inválido", async () => {
 
         const usuario = {
@@ -227,26 +173,8 @@ describe("API Shopping do QA", () => {
             .post("/usuarios")
             .send(usuario);
 
-        /*
-         * IMPORTANTE:
-         * O seu server.js atualmente NÃO possui
-         * validação de formato de e-mail.
-         *
-         * Portanto este teste documenta o comportamento
-         * atual da API.
-         *
-         * O ideal será implementar essa validação depois.
-         */
-
         expect(response.statusCode).toBe(201);
     });
-
-
-    // =====================================================
-    // CT-API-009
-    // POST /usuarios
-    // E-mail duplicado
-    // =====================================================
 
     test("CT-API-009 - Deve rejeitar e-mail já cadastrado", async () => {
 
@@ -269,13 +197,6 @@ describe("API Shopping do QA", () => {
             "E-mail já cadastrado."
         );
     });
-
-
-    // =====================================================
-    // CT-API-010
-    // POST + GET
-    // Persistência
-    // =====================================================
 
     test("CT-API-010 - Deve persistir o usuário cadastrado", async () => {
 
@@ -304,12 +225,6 @@ describe("API Shopping do QA", () => {
             "senha"
         );
     });
-
-
-    // =====================================================
-    // CT-API-011
-    // DELETE /usuarios
-    // =====================================================
 
     test("CT-API-011 - Deve rejeitar DELETE não implementado", async () => {
 
@@ -355,10 +270,7 @@ describe("API Shopping do QA", () => {
     });
 
 
-    // =====================================================
-    // LOGIN
-    // Sem dados
-    // =====================================================
+    // LOGIN - sem dados
 
     test("Deve rejeitar login sem e-mail e senha", async () => {
 
@@ -374,11 +286,7 @@ describe("API Shopping do QA", () => {
         );
     });
 
-
-    // =====================================================
-    // LOGIN
-    // Credenciais inválidas
-    // =====================================================
+    // LOGIN - credenciais invalidas
 
     test("Deve rejeitar login com credenciais inválidas", async () => {
 
