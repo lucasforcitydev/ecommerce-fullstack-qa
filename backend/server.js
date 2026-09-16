@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
 const { createClient } = require("@supabase/supabase-js");
-
 require("dotenv").config();
 
 const app = express();
@@ -17,14 +15,21 @@ const supabase = createClient(
     process.env.SUPABASE_KEY
 );
 
+// =====================================================
+// GET /
+// =====================================================
+
 app.get("/", (req, res) => {
     res.json({
         mensagem: "API Shopping do QA funcionando!"
     });
 });
 
-app.get("/usuarios", async (req, res) => {
+// =====================================================
+// GET /usuarios
+// =====================================================
 
+app.get("/usuarios", async (req, res) => {
     const { data, error } = await supabase
         .from("usuarios")
         .select("id, nome, sobrenome, email, data_de_nascimento");
@@ -35,11 +40,14 @@ app.get("/usuarios", async (req, res) => {
         });
     }
 
-    res.json(data);
+    res.status(200).json(data);
 });
 
-app.post("/login", async (req, res) => {
+// =====================================================
+// POST /login
+// =====================================================
 
+app.post("/login", async (req, res) => {
     const { email, senha } = req.body;
 
     if (!email || !senha) {
@@ -67,8 +75,11 @@ app.post("/login", async (req, res) => {
     });
 });
 
-app.post("/usuarios", async (req, res) => {
+// =====================================================
+// POST /usuarios
+// =====================================================
 
+app.post("/usuarios", async (req, res) => {
     const {
         nome,
         sobrenome,
@@ -77,12 +88,20 @@ app.post("/usuarios", async (req, res) => {
         senha
     } = req.body;
 
-    if (!nome || !sobrenome || !email || !data_de_nascimento || !senha) {
+    // Validação dos campos obrigatórios
+    if (
+        !nome ||
+        !sobrenome ||
+        !email ||
+        !data_de_nascimento ||
+        !senha
+    ) {
         return res.status(400).json({
             mensagem: "Todos os campos são obrigatórios."
         });
     }
 
+    // Verifica se o e-mail já existe
     const { data: usuarioExistente } = await supabase
         .from("usuarios")
         .select("id")
@@ -95,6 +114,7 @@ app.post("/usuarios", async (req, res) => {
         });
     }
 
+    // Cadastra usuário
     const { data, error } = await supabase
         .from("usuarios")
         .insert([
@@ -106,11 +126,14 @@ app.post("/usuarios", async (req, res) => {
                 senha
             }
         ])
-        .select("id, nome, sobrenome, email, data_de_nascimento")
+        .select(
+            "id, nome, sobrenome, email, data_de_nascimento"
+        )
         .single();
 
     if (error) {
         console.error("ERRO SUPABASE:", error);
+
         return res.status(500).json({
             mensagem: "Erro ao cadastrar usuário.",
             erro: error.message,
@@ -125,6 +148,18 @@ app.post("/usuarios", async (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+// =====================================================
+// EXPORTAÇÃO PARA TESTES
+// =====================================================
+
+module.exports = app;
+
+// =====================================================
+// INICIAR SERVIDOR
+// =====================================================
+
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+}
